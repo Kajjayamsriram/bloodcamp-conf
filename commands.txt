@@ -1,0 +1,7 @@
+#Instals the load-blanacer controller role policy
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.14.1/docs/install/iam_policy.json
+
+##Ref##
+https://docs.aws.amazon.com/eks/latest/userguide/lbc-manifest.html
+
+#old IRSA complex, faced cycle dependencies.
