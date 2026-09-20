@@ -76,7 +76,7 @@ module "eks" {
   ebs_csi_role = module.iam.ebs_csi_role
   efs_csi_role = module.iam.efs_csi_role
   lb_role = module.iam.lb_role
-  
+
 
   depends_on = [ module.network, module.sg ]
 }
@@ -139,7 +139,7 @@ module "ec2" {
     source = "./Module/ec2"
     instances = {
       Jenkins ={
-        itype = "c7i-flex.large"
+        itype = "m7i-flex.large"
         ami = "ami-0e34b50e714a297f1"
         subnet_id = module.network.subnets["public1"]
         sg = module.sg.sg["ec2"]
