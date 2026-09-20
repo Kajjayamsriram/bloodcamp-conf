@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb
+  namespace: bank-dev
+spec:
+  ClusterIP: None
+  selector:
+    app: blood-db
+  ports:
+  - port: 80
+    targetPort: 80

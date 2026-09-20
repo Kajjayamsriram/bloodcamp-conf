@@ -76,6 +76,7 @@ module "eks" {
   ebs_csi_role = module.iam.ebs_csi_role
   efs_csi_role = module.iam.efs_csi_role
   lb_role = module.iam.lb_role
+  
 
   depends_on = [ module.network, module.sg ]
 }
@@ -157,4 +158,17 @@ module "ec2" {
     cluster_name = module.eks.cluster_name
     })
     depends_on = [ module.iam, module.network, module.sg ]
+}
+module "ecr_repo" {
+  source = "./Module/ecr"
+  repos = {
+    blood-app ={
+        mutability = "MUTABLE"
+        encrypt = "AES256"
+    },
+    blood-db ={
+        mutability = "MUTABLE"
+        encrypt = "AES256"
+    }
+  }
 }

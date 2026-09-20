@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PodDisruptionBudget
+metadata:
+  name: app-pdb
+  namespace: bank-dev
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: bank-app

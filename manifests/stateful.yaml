@@ -1,0 +1,44 @@
+apiVersion: dbs/v1
+kind: Deployment
+metadata:
+  name: db-stateful
+spec:
+  serviceName: mysqldb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bank-db
+  template:
+    metadata:
+      labels:
+        app: bank-db
+        namespace: bank-dev
+    spec:
+      containers:
+      - name: cont1
+        image: ecr
+        ports:
+        - containerPort: 80
+        envFrom:
+          - secretRef:
+              name:  secret
+        resources:
+          limits:
+            memory: "250Mi"
+            cpu: "700m"
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+        volumeMount:
+          - name: mysql-vol
+            mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-vol
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 2Gi

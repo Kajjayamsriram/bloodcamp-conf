@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+  namespace: bank-dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bank-app
+  template:
+    metadata:
+      labels:
+        app: bank-app
+    spec:
+      containers:
+      - name: cont1
+        image: ecr
+        ports:
+        - containerPort: 80
+        envFrom:
+          - configMapRef:
+              name:  cm1
+        resources:
+          limits:
+            memory: "250Mi"
+            cpu: "700m"
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+        
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          intialDelaySeconds: 30
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          intialDelaySeconds: 30
+          periodSeconds: 5

@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netpol
+  namespace: bank-dev
+spec:
+  podSelector:
+    matchLabels:
+      app: bank-app
+  policyTypes:
+    - Egress
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 80
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: bank-dev
+          podSelector:
+            matchLabels:
+              app: bank-db
+      ports:
+        - protocol: TCP
+          port: 3306
+    - to:
+        - namespaceSelector:
+            matchLabels: 
+              kubernetes.io/metadata.name: kube-system
+      ports:
+          - protocol: UDP
+            port: 53
