@@ -7,15 +7,15 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: bank-app
+      app: blood-app
   template:
     metadata:
       labels:
-        app: bank-app
+        app: blood-app
     spec:
       containers:
       - name: cont1
-        image: ecr
+        image: 967848863323.dkr.ecr.us-east-1.amazonaws.com/blood-app:2
         ports:
         - containerPort: 80
         envFrom:
@@ -27,17 +27,22 @@ spec:
             cpu: "700m"
           requests:
             memory: "128Mi"
-            cpu: "500m"
+            cpu: "250m"
         
         livenessProbe:
           httpGet:
             path: /
             port: 80
-          intialDelaySeconds: 30
+          initialDelaySeconds: 40
           periodSeconds: 5
+          timeoutSeconds: 5
+          failureThreshold: 3
+          
         readinessProbe:
           httpGet:
             path: /
             port: 80
-          intialDelaySeconds: 30
+          initialDelaySeconds: 40
           periodSeconds: 5
+          timeoutSeconds: 5
+          failureThreshold: 3

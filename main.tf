@@ -63,7 +63,7 @@ module "eks" {
   node_max_size = 4
   node_min_size = 3
   node_max_unavail = 2
-  node_desired = 2
+  node_desired = 3
   environment = "dev"
 
   eks_cluster_access = "AmazonEKSClusterAdminPolicy"
@@ -76,7 +76,7 @@ module "eks" {
   ebs_csi_role = module.iam.ebs_csi_role
   efs_csi_role = module.iam.efs_csi_role
   lb_role = module.iam.lb_role
-
+  vpc_id = module.network.vpc_id
 
   depends_on = [ module.network, module.sg ]
 }

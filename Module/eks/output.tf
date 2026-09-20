@@ -7,3 +7,6 @@ output "cluster_endpoint" {
 output "update_kubeconfig"{
     value = "aws eks update-kubeconfig --region ${data.aws_region.current.region} --name ${aws_eks_cluster.eks_cluster.name}"
 }
+output "cluster_certificate_authority" {
+  value = aws_eks_cluster.eks_cluster.certificate_authority[0].data
+}

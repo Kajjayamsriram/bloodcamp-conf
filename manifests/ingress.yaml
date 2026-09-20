@@ -5,18 +5,17 @@ metadata:
   namespace: bank-dev
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx #alb for AppLB
   rules:
     - http:
         paths:
           - path: /
             pathType: Prefix
 
-            bankend:
+            backend:
               service:
                 name: app-svc
                 port:
                   number: 80
-            
-      

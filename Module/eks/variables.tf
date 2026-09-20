@@ -73,3 +73,6 @@ variable "db_role" {
 variable "app_role" {
   type = string
 }
+variable "vpc_id" {
+  type = string
+}

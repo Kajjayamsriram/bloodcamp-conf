@@ -6,10 +6,13 @@ resource "aws_eks_addon" "ebs_csi" {
   addon_name = "aws-ebs-csi-driver"
   addon_version = "v1.66.0-eksbuild.1" #var.ebs_csi_version
 
-  service_account_role_arn = var.ebs_csi_role #aws_iam_role.ebs_csi_role.arn
+#   service_account_role_arn = var.ebs_csi_role #aws_iam_role.ebs_csi_role.arn
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
+  depends_on = [
+    aws_eks_node_group.node_group
+  ]
 }
 
 resource "aws_eks_addon" "vpc_cni" {
@@ -28,6 +31,9 @@ resource "aws_eks_addon" "coredns" {
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
+  depends_on = [
+    aws_eks_node_group.node_group
+  ]
 }
 
 resource "aws_eks_addon" "kube_proxy" {
@@ -44,13 +50,16 @@ resource "aws_eks_addon" "efs_driver" {
   addon_name = "aws-efs-csi-driver"
   addon_version = "v3.4.2-eksbuild.1" #var.efs_driver_version
 
-  service_account_role_arn = var.efs_csi_role #aws_iam_role.efs_csi_role.arn
+#   service_account_role_arn = var.efs_csi_role #aws_iam_role.efs_csi_role.arn
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
+  depends_on = [
+    aws_eks_node_group.node_group
+  ]
 }
 
 resource "helm_release" "lb_driver" {
-    name       = "aws_lb_controller"
+    name       = "aws-lb-controller"
     repository = "https://aws.github.io/eks-charts"
     chart      = "aws-load-balancer-controller"
     namespace  = "kube-system"
@@ -72,6 +81,19 @@ resource "helm_release" "lb_driver" {
         {
         name = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
         value = var.lb_role #aws_iam_role.lb_role.arn
+        },
+        {
+        name  = "vpcId"
+        value = var.vpc_id #module.vpc.vpc_id
         }
     ]
+}
+
+resource "aws_eks_addon" "pod_identity_agent" {
+  cluster_name = aws_eks_cluster.eks_cluster.name
+  addon_name   = "eks-pod-identity-agent"
+  addon_version = "v1.4.0-eksbuild.2"
+  
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 }

@@ -6,7 +6,7 @@ metadata:
 spec:
   hard:
     requests.cpu: "1"
-    requests.memory: "250Mi"
-    limts.cpu: "2"
-    limits.memory: "1Gi"
-    service.loadblancers: "2"
+    requests.memory: "450Mi"
+    limits.cpu: "3"
+    limits.memory: "2Gi"
+    services.loadbalancers: "2"

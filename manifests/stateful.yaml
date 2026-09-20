@@ -1,5 +1,5 @@
-apiVersion: dbs/v1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: db-stateful
 spec:
@@ -7,16 +7,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bank-db
+      app: blood-db
   template:
     metadata:
       labels:
-        app: bank-db
+        app: blood-db
         namespace: bank-dev
     spec:
       containers:
       - name: cont1
-        image: ecr
+        image: 967848863323.dkr.ecr.us-east-1.amazonaws.com/blood-db:2
         ports:
         - containerPort: 80
         envFrom:

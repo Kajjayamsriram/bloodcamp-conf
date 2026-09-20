@@ -136,7 +136,7 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_drive" {
 
 resource "aws_iam_role_policy_attachment" "vpc_cni" {
     role = aws_iam_role.node_role.name
-    policy_arn = "arn:aws:iam::aws:policy/service-role/${var.vpc_cni_policy}" #AmazonEKS_CNI_Policy
+    policy_arn = "arn:aws:iam::aws:policy/${var.vpc_cni_policy}" #AmazonEKS_CNI_Policy
 }
 #Using the above node_role
 
